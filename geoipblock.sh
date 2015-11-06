@@ -11,7 +11,7 @@ fi
 
 
 # delete iptables geoblock rule if exists
-rule=$( iptables -vnL --line-numbers |grep geoblock | awk '{print $1}' )
+rule=$( iptables -vnL --line-numbers |grep geoblock |awk '{print $1}' )
 if [ -n $rule ]; then
         iptables -D INPUT $rule
 fi
