@@ -7,6 +7,7 @@ if [ $? = "0" ]; then
         rm -f /usr/local/admin/geoblock/countries/*.zone
         tar zxvf all-zones.tar.gz
         rm all-zones.tar.gz
+        cd -
 fi
 
 
