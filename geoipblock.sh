@@ -31,7 +31,7 @@ ipset create geoblock hash:net
 echo ""
 echo "generating list of IPs to block.  this may take a while"
 echo ""
-for country in br cn kp; do
+for country in br cn cz hk ir kp tr tw ru ua; do
         for ip in $( cat /usr/local/admin/geoblock/countries/$country.zone ); do
                 ipset -A geoblock $ip
         done
