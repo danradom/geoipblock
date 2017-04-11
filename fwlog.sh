@@ -37,7 +37,6 @@ echo "" >> $log
 
 /sbin/iptables -L -v >> $log
 echo "" >> $log
-echo "" >> $log
 /sbin/iptables -L -v -t nat >> $log
 
 
