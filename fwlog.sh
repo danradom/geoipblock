@@ -31,6 +31,16 @@ do
 done < $log.tmp
 
 
+echo "" >> $log
+echo "" >> $log
+
+
+/sbin/iptables -L -v >> $log
+echo "" >> $log
+echo "" >> $log
+/sbin/iptables -L -v -t nat >> $log
+
+
 cat $log |mail -s "fw.radom.org iptable log analysis  -  $date" $email
 
 
