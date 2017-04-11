@@ -26,7 +26,7 @@ do
         ip=${entry[0]}
         port=${entry[1]}
 
-        echo -e "$ip:`geoiplookup $ip|sed 's/GeoIP Country Edition://'`\t\tport:$port" >> $log
+        echo -e "`geoiplookup $ip|sed 's/GeoIP Country Edition://'`\t\tip:$ip\t\tport:$port" >> $log
 
 done < $log.tmp
 
