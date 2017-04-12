@@ -38,9 +38,9 @@ echo "" >> $log
 echo "" >> $log
 
 
-/sbin/iptables -L -v >> $log
+/sbin/iptables -vnL --line-numbers >> $log
 echo "" >> $log
-/sbin/iptables -L -v -t nat >> $log
+/sbin/iptables -vnL -t nat >> $log
 
 
 cat $log |mail -s "fw.host.net iptable log analysis  -  $date" $email
