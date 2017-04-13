@@ -20,7 +20,7 @@ log="/usr/local/admin/fwlog/$date-fwlog.log"
 echo "fw.host.net iptables log analysis  -  $date" > $log
 echo "" >> $log
 
-grep SRC /var/log/iptables.log  |sed -e 's/.*SRC=//' -e 's/\ DST.*DPT=/|/' -e s'/\ .*//' >> $log.tmp
+grep SRC /var/log/iptables.log  |sed -e 's/.*SRC=//' -e 's/\ DST.*DPT=/|/' -e s'/\ .*//' > $log.tmp
 printf "%-32s %-20s %-5s\n" "country" "ip" "port" >> $log
 echo "-------------------------------------------------------------------------" >> $log
 
