@@ -15,7 +15,7 @@ blocklog="/var/log/iptables.log"
 log="/usr/local/admin/fwlog/iplog.log"
 
 
-grep SRC /var/log/iptables.log  |sed -e 's/.*SRC=//' -e 's/\ DST.*DPT=/|/' -e s'/\ .*//' >> $log.tmp
+grep SRC /var/log/iptables.log  |sed -e 's/.*SRC=//' -e 's/\ DST.*DPT=/|/' -e s'/\ .*//' > $log.tmp
 printf "%-32s %-20s %-5s\n" "country" "ip" "port" >> $log
 echo "-------------------------------------------------------------------------" >> $log
 
