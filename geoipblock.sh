@@ -10,10 +10,8 @@ fi
 
 
 # delete iptables geoblock rule if exists
-rule=$( iptables -vnL --line-numbers |grep geoblock |awk '{print $1}' )
-if [ -n $rule ]; then
-        iptables -D INPUT $rule
-fi
+iptables -D INPUT -m set --match-set geoblock src -j DROP
+iptables -D FORWARD -m set --match-set geoblock src -j DROP
 
 
 # delete geoblock ipset list if exists
@@ -40,6 +38,7 @@ done
 
 # add iptables geoblock rule
 iptables -I INPUT -m set --match-set geoblock src -j DROP
+iptables -I FORWARD -m set --match-set geoblock src -j DROP
 
 
 # display iptables rules
