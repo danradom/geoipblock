@@ -9,7 +9,7 @@ if [ $? = "0" ]; then
 fi
 
 
-# delete iptables geoblock rule
+# delete iptables geoblock rules
 iptables -D INPUT -m set --match-set geoblock src -j DROP
 iptables -D FORWARD -m set --match-set geoblock src -j DROP
 
@@ -36,7 +36,7 @@ for country in br cn cz hk ir kp tr tw ru ua; do
 done
 
 
-# add iptables geoblock rule
+# add iptables geoblock rules
 iptables -I INPUT -m set --match-set geoblock src -j DROP
 iptables -I FORWARD -m set --match-set geoblock src -j DROP
 
