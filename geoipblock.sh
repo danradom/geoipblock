@@ -9,7 +9,7 @@ if [ $? = "0" ]; then
 fi
 
 
-# delete iptables geoblock rule if exists
+# delete iptables geoblock rule
 iptables -D INPUT -m set --match-set geoblock src -j DROP
 iptables -D FORWARD -m set --match-set geoblock src -j DROP
 
