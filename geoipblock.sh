@@ -27,18 +27,22 @@ ipset create geoblock hash:net
 
 # populate geoblock ipset list
 echo ""
-echo "generating list of IPs to block.  this may take a while"
+echo "generating list of IPs to allow.  this may take a while"
 echo ""
-for country in br cn cz hk ir kp tr tw ru ua; do
-        for ip in $( cat /usr/local/admin/geoblock/countries/$country.zone ); do
-                ipset -A geoblock $ip
+# populate geoip ipset list
+# must add local networks
+$ipset -A geoip 192.168.0.0/24
+$ipset -A geoip 192.168.1.0/24
+for country in il us; do
+        for ip in $( cat /usr/local/admin/geoip/countries/$country.zone ); do
+                $ipset -A geoip $ip
         done
 done
 
 
 # add iptables geoblock rules
-iptables -I INPUT -m set --match-set geoblock src -j DROP
-iptables -I FORWARD -m set --match-set geoblock src -j DROP
+iptables -I INPUT -m set ! --match-set geoblock src -j DROP
+iptables -I FORWARD -m set ! --match-set geoblock src -j DROP
 
 
 # display iptables rules
