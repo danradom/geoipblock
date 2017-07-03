@@ -9,17 +9,6 @@ ipset="/sbin/ipset"
 lan="enp1s0"
 
 
-# download and unpack geoip data
-wget -O /usr/local/admin/geoip/countries/all-zones.tar.gz http://www.ipdeny.com/ipblocks/data/countries/all-zones.tar.gz > /dev/null 2>&1
-if [ $? = "0" ]; then
-        cd /usr/local/admin/geoip/countries > /dev/null 2>&1
-        rm -f /usr/local/admin/geoip/countries/*.zone
-        tar zxvf all-zones.tar.gz > /dev/null 2>&1
-        rm all-zones.tar.gz
-        cd - > /dev/null 2>&1
-fi
-
-
 # delete geoip ipset list if exists
 $iptables -D INPUT -i $lan -m set ! --match-set geoip src -j DROP > /dev/null 2>&1
 $iptables -D INPUT -i $lan -m limit  --limit 1/s -m set ! --match-set geoip src -j LOG --log-prefix "geoblock: " > /dev/null 2>&1
@@ -31,11 +20,9 @@ $ipset create geoip hash:net
 
 
 # populate geoip ipset list
-for country in il us; do
-        for ip in $( cat /usr/local/admin/geoip/countries/$country.zone ); do
-                $ipset add geoip $ip
-        done
-done
+for ip in $( wget -qO- http://www.ipdeny.com/ipblocks/data/countries/il.zone http://www.ipdeny.com/ipblocks/data/countries/us.zone); do
+        $ipset add geoip $ip
+donee
 
 
 # flush chains and set policies
