@@ -44,14 +44,17 @@ $iptables -A INPUT -i $wan -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 
 # recreate geoip ipset list
-$ipset destroy geoip
-$ipset create geoip hash:net
+if [ "$1" = "geoip" ]; then
+        $ipset destroy geoip
+        $ipset create geoip hash:net
 
 
-# populate geoip ipset list
-for ip in $( wget -qO- http://www.ipdeny.com/ipblocks/data/countries/il.zone http://www.ipdeny.com/ipblocks/data/countries/us.zone ); do
-        $ipset add geoip $ip
-done
+        # populate geoip ipset list
+        for ip in $( wget -qO- http://www.ipdeny.com/ipblocks/data/countries/il.zone http://www.ipdeny.com/ipblocks/data/countries/us.zone ); do
+        # for ip in $( wget -qO- http://www.ipdeny.com/ipblocks/data/countries/il.zone ); do
+                $ipset add geoip $ip
+        done
+fi
 
 
 # blocking reserved private networks incoming from the internet
