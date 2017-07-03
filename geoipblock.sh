@@ -67,7 +67,7 @@ $iptables -A OUTPUT -o $lan -m state --state NEW -j ACCEPT
 $iptables -A OUTPUT -o $lan -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 
-# drop ssh traffic from countries other than IL and US
+# drop traffic from countries other than IL and US
 $iptables -A INPUT -i $lan -m limit  --limit 1/s -m set ! --match-set geoip src -j LOG --log-prefix "geoblock: "
 $iptables -A INPUT -i $lan -m set ! --match-set geoip src -j DROP
 
