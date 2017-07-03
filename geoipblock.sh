@@ -30,9 +30,11 @@ echo ""
 echo "generating list of IPs to allow.  this may take a while"
 echo ""
 # populate geoip ipset list
-# must add local networks
+# must add local networks and such
 ipset -A geoip 192.168.0.0/24
 ipset -A geoip 192.168.1.0/24
+ipset -A geoip 169.254.0.0/16
+ipset -A geoip 224.0.0.0/4
 for country in il us; do
         for ip in $( cat /usr/local/admin/geoip/countries/$country.zone ); do
                 $ipset -A geoip $ip
