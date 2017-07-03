@@ -3,26 +3,15 @@
 
 # set variables
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
-systemctl="/bin/systemctl"
+systemctl="/usr/bin/systemctl"
 iptables="/sbin/iptables"
 ipset="/sbin/ipset"
-lan="eth0"
+lan="enp1s0"
 
 
-# delete geoip ipset list if exists
+# delete geoip rules
 $iptables -D INPUT -i $lan -m set ! --match-set geoip src -j DROP > /dev/null 2>&1
 $iptables -D INPUT -i $lan -m limit  --limit 1/s -m set ! --match-set geoip src -j LOG --log-prefix "geoblock: " > /dev/null 2>&1
-$ipset destroy geoip > /dev/null 2>&1
-
-
-# create geoip ipset list
-$ipset create geoip hash:net
-
-
-# populate geoip ipset list
-for ip in $( wget -qO- http://www.ipdeny.com/ipblocks/data/countries/il.zone http://www.ipdeny.com/ipblocks/data/countries/us.zone); do
-        $ipset add geoip $ip
-done
 
 
 # flush chains and set policies
@@ -39,7 +28,6 @@ $iptables -A OUTPUT -o lo -j ACCEPT
 
 # allow all traffic from local networks
 $iptables -A INPUT -i $lan -s 192.168.0.0/24 -j ACCEPT
-$iptables -A INPUT -i $lan -s 192.168.1.0/24 -j ACCEPT
 $iptables -A INPUT -i $lan -s 169.254.0.0/16 -j ACCEPT
 $iptables -A INPUT -i $lan -s 127.0.0.0/8 -j ACCEPT
 
@@ -53,6 +41,19 @@ $iptables -A INPUT -i $lan -m pkttype --pkt-type broadcast -j ACCEPT
 $iptables -A INPUT -i $lan -m state --state ESTABLISHED,RELATED -j ACCEPT
 $iptables -A OUTPUT -o $lan -m state --state NEW -j ACCEPT
 $iptables -A OUTPUT -o $lan -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+
+# recreate geoip ipset if needed
+if [ "$1" = "geoip" ]; then
+        $ipset destroy geoip > /dev/null 2>&1
+        $ipset create geoip hash:net
+
+
+        # populate geoip ipset list
+        for ip in $( wget -qO- http://www.ipdeny.com/ipblocks/data/countries/il.zone http://www.ipdeny.com/ipblocks/data/countries/us.zone ); do
+                $ipset add geoip $ip
+        done
+fi
 
 
 # drop traffic from countries other than IL and US
