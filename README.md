@@ -6,3 +6,4 @@ iptables / ipset GeoIP block script
 - all packets pass through the geoipblock first
 - nat and no nat versions
 - support for fail2ban
+- geoip and iptables log parsing scripts
