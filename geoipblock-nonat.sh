@@ -9,11 +9,6 @@ ipset="/sbin/ipset"
 lan="enp1s0"
 
 
-# delete geoip rules
-$iptables -D INPUT -i $lan -m set ! --match-set geoip src -j DROP > /dev/null 2>&1
-$iptables -D INPUT -i $lan -m limit  --limit 1/s -m set ! --match-set geoip src -j LOG --log-prefix "geoblock: " > /dev/null 2>&1
-
-
 # flush chains and set policies
 $iptables -F
 $iptables -P INPUT DROP
