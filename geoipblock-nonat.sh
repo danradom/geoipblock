@@ -27,7 +27,7 @@ $iptables -A INPUT -i $lan -s 169.254.0.0/16 -j ACCEPT
 $iptables -A INPUT -i $lan -s 127.0.0.0/8 -j ACCEPT
 
 
-# allow multicase and broadcast traffic
+# allow multicast and broadcast traffic
 $iptables -A INPUT -i $lan -m pkttype --pkt-type multicast -j ACCEPT
 $iptables -A INPUT -i $lan -m pkttype --pkt-type broadcast -j ACCEPT
 
