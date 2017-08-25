@@ -18,8 +18,7 @@ log="/usr/local/admin/backup/iplog.log"
 if [ -n "$1" ]; then
 	grep geoblock /var/log/iptables.log |sed -e 's/.*SRC=//' -e 's/\ DST.*DPT=/|/' -e 's/\ .*//' |tail -$1 > $log.tmp
 else
-	grep geoblock /var/log/iptables.log |sed -e 's/.*SRC=//' -e 's/\ DST.*DPT=/|/' -e 's/\ .*//' > $log.tm
-p
+	grep geoblock /var/log/iptables.log |sed -e 's/.*SRC=//' -e 's/\ DST.*DPT=/|/' -e 's/\ .*//' > $log.tmp
 fi
 printf "%-32s %-20s %-5s\n" "country" "ip" "port" >> $log
 echo "-------------------------------------------------------------------------" >> $log
